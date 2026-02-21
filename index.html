@@ -30,12 +30,12 @@
           execCallback: execCb,
           systemProperties: { 
             "user.home": "/str", 
-            "user.dir": "/app/jedit"
+            "user.dir": "/app/jedit-in-browser/jedit"
           }
         });
 
         cheerpjCreateDisplay(1400, 650);
-        await cheerpjRunJar("/app/jedit/jedit.jar", "-settings=/str/.jedit");
+        await cheerpjRunJar("/app/jedit-in-browser/jedit/jedit.jar", "-settings=/str/.jedit");
       })();
     </script>
   </body>
