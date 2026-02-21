@@ -1,3 +1,5 @@
+Issue: Works on Chrome but not on Firefox
+
 Credit:
 
 - CheerpJ: https://cheerpj.com
