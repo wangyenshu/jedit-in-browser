@@ -28,9 +28,9 @@
           version: 11, 
           enableDebug: true, 
           execCallback: execCb,
-          preloadResources: [
-            "/jedit-in-browser/jedit/keymaps/jEdit_keys.props"
-          ],
+          preloadResources: {
+            "/jedit-in-browser/jedit/keymaps/jEdit_keys.props": []
+          },
           systemProperties: { 
             "user.home": "/str", 
             "user.dir": "/app/jedit-in-browser/jedit"
