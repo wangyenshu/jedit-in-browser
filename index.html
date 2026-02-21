@@ -23,25 +23,14 @@
         }
       }
 
-      // Intercept CheerpJ's internal fetch requests and strip the 'Range' header.
-      // This bypasses the GitHub Pages partial-gzip bug and forces CheerpJ to cache the whole file automatically.
-      const originalFetch = window.fetch;
-      window.fetch = function(resource, init) {
-        if (init && init.headers) {
-          // Normalize all header types (Objects, Arrays, or Headers instances) into a Headers object
-          const newHeaders = new Headers(init.headers);
-          newHeaders.delete('Range');
-          newHeaders.delete('range');
-          init.headers = newHeaders;
-        }
-        return originalFetch(resource, init);
-      };
-
       (async function () {
         await cheerpjInit({ 
           version: 11, 
           enableDebug: true, 
           execCallback: execCb,
+          preloadResources: [
+            "/app/jedit-in-browser/jedit/keymaps/jEdit_keys.props"
+          ],
           systemProperties: { 
             "user.home": "/str", 
             "user.dir": "/app/jedit-in-browser/jedit"
