@@ -5,23 +5,31 @@
     <title>jEdit 5.7.0 (CheerpJ)</title>
     <script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
     <style>
-      body {
-        margin: 0;
-        background: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
+      body { margin: 0; background: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
     </style>
   </head>
   <body>
     <script>
       function execCb(cmdPath, argsArray) {
-        if (cmdPath == "xdg-open") {
-          window.open(argsArray, "_blank");
-        }
+        if (cmdPath == "xdg-open") { window.open(argsArray, "_blank"); }
       }
+
+      // MINIMAL FIX: Netlify Directory 404 Bypass
+      const originalFetch = window.fetch;
+      window.fetch = async function(resource, init) {
+        const url = typeof resource === 'string' ? resource : resource.url;
+        
+        // If the requested URL has no file extension (meaning Java is checking a directory like /keymaps/)
+        if (!url.split('/').pop().includes('.')) {
+          // Return a dummy HTML directory listing so Java's .exists() and .listFiles() succeed
+          return new Response('<a href="jEdit_keys.props">jEdit_keys.props</a>', {
+            status: 200,
+            headers: { 'Content-Type': 'text/html' }
+          });
+        }
+        
+        return originalFetch(resource, init);
+      };
 
       (async function () {
         await cheerpjInit({ 
