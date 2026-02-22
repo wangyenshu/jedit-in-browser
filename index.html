@@ -29,16 +29,16 @@
           enableDebug: true, 
           execCallback: execCb,
           preloadResources: {
-            "/jedit-in-browser/jedit/keymaps/jEdit_keys.props": []
+            "/jedit/keymaps/jEdit_keys.props": []
           },
           systemProperties: { 
             "user.home": "/str", 
-            "user.dir": "/app/jedit-in-browser/jedit"
+            "user.dir": "/app/jedit"
           }
         });
 
         cheerpjCreateDisplay(1400, 650);
-        await cheerpjRunJar("/app/jedit-in-browser/jedit/jedit.jar", "-settings=/str/.jedit");
+        await cheerpjRunJar("/app/jedit/jedit.jar", "-settings=/str/.jedit");
       })();
     </script>
   </body>
