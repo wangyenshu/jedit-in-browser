@@ -5,23 +5,38 @@
     <title>jEdit 5.7.0 (CheerpJ)</title>
     <script src="https://cjrtnc.leaningtech.com/4.2/loader.js"></script>
     <style>
-      body {
-        margin: 0;
-        background: #f0f0f0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 100vh;
-      }
+      body { margin: 0; background: #f0f0f0; display: flex; justify-content: center; align-items: center; height: 100vh; }
     </style>
   </head>
   <body>
     <script>
       function execCb(cmdPath, argsArray) {
-        if (cmdPath == "xdg-open") {
-          window.open(argsArray, "_blank");
-        }
+        if (cmdPath == "xdg-open") { window.open(argsArray, "_blank"); }
       }
+
+      // MINIMAL FIX: Cloudflare CDN & Directory Bypass
+      const originalFetch = window.fetch;
+      window.fetch = async function(resource, init) {
+        const url = typeof resource === 'string' ? resource : resource.url;
+        
+        // 1. Cloudflare Directory Bypass (Cloudflare returns 404 for folders without index.html)
+        if (!url.split('/').pop().includes('.')) {
+          return new Response('<a href="jEdit_keys.props">jEdit_keys.props</a>', {
+            status: 200,
+            headers: { 'Content-Type': 'text/html' }
+          });
+        }
+        
+        // 2. Cloudflare Range/Header Bypass (Forces standard full-file delivery)
+        if (init && init.headers) {
+          const newHeaders = new Headers(init.headers);
+          newHeaders.delete('Range');
+          newHeaders.delete('range');
+          init.headers = newHeaders;
+        }
+        
+        return originalFetch(resource, init);
+      };
 
       (async function () {
         await cheerpjInit({ 
